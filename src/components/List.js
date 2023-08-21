@@ -1,10 +1,38 @@
+import {useEffect, useState} from 'react';
+import Character from "./Character";
 function List(){
-    return <h2>Characters</h2>;
+    const [loading,setLoading] =useState(true);
+    const [characters,setCharacters] = useState([]);
+    useEffect(()=>{
+        async function fetchData(){
+            const data = await fetch(
+                'https://rickandmortyapi.com/api/character');
+
+            const { results } = await data.json();
+
+            setCharacters(results);
+            setLoading(false);
+        }
+
+        fetchData();
+    },characters.length);
+
+    return (<div className='row'>
+    {loading ? (
+        <div>Loading...</div>
+    ):(
+        characters.map((character) =>(
+            <Character
+                key = {character.id}
+                name = {character.name}
+                origin = {character.origin}
+                image={character.image}
+            />
+        ))
+    )}
+    </div>);
 }
 
-function Character(){
-    return <h3>Character</h3>;
-}
 
-// export default List;
-export default Character;
+
+export default List;
